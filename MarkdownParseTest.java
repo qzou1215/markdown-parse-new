@@ -1,9 +1,11 @@
 import static org.junit.Assert.*;
 import org.junit.*;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MarkdownParseTest {
@@ -13,30 +15,68 @@ public class MarkdownParseTest {
     }
 
     @Test
+    public void testSpaceAfterParen() {
+        String contents = "[title]( space-in-url.com)";
+        List<String> expect = List.of("space-in-url.com");
+        assertEquals(expect, MarkdownParse.getLinks(contents));
+    }
+
+    @Test
     public void testFile1() throws IOException {
-        String contents= Files.readString(Path.of("./test-file.md"));
-        List<String> expect = List.of("https://something.com", "some-page.html");
+        int len = 0;
+        String contents = "";
+        FileReader fr = new FileReader("/Users/zouqingtong/Documents/GitHub/markdown-parse-new/test-file.md");
+        while((len = fr.read())!=-1){
+            contents += (char) len;
+        }
+        fr.close();
+        String[] arr = {"https://something.com", "some-page.html"};
+        ArrayList<String> expect = new ArrayList<>();
+        expect.add(arr[0]);
+        expect.add(arr[1]);
         assertEquals(MarkdownParse.getLinks(contents), expect);
     }
 
     @Test
     public void testFile2() throws IOException {
-        String contents= Files.readString(Path.of("./test-file2.md"));
-        List<String> expect = List.of("https://something.com", "some-page.html");
+        int len = 0;
+        String contents = "";
+        FileReader fr = new FileReader("test-file2.md");
+        while((len = fr.read())!=-1){
+            contents += (char) len;
+        }
+        fr.close();
+        String[] arr = {"https://something.com", "some-page.html"};
+        ArrayList<String> expect = new ArrayList<>();
+        expect.add(arr[0]);
+        expect.add(arr[1]);
         assertEquals(MarkdownParse.getLinks(contents), expect);
     }
 
     @Test
     public void testFile3() throws IOException {
-        String contents= Files.readString(Path.of("./test-file3.md"));
-        List<String> expect = List.of();
+        int len = 0;
+        String contents = "";
+        FileReader fr = new FileReader("test-file3.md");
+        while((len = fr.read())!=-1){
+            contents += (char) len;
+        }
+        fr.close();
+        ArrayList<String> expect = new ArrayList<>();
         assertEquals(MarkdownParse.getLinks(contents), expect);
+
     }
 
     @Test
     public void testFile8() throws IOException {
-        String contents= Files.readString(Path.of("./test-file8.md"));
-        List<String> expect = List.of("some-page.html");
+        int len = 0;
+        String contents = "";
+        FileReader fr = new FileReader("test-file8.md");
+        while((len = fr.read())!=-1){
+            contents += (char) len;
+        }
+        fr.close();
+        ArrayList<String> expect = new ArrayList<>();
         assertEquals(MarkdownParse.getLinks(contents), expect);
     }
     
